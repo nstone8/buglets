@@ -1,29 +1,30 @@
 extern crate gtk;
+extern crate cairo;
+
+mod hex_objects;
 
 use gtk::prelude::*;
-use gtk::{Button, Window, WindowType};
-
+use gtk::DrawingArea;
+use hex_objects::*;
 fn main() {
     if gtk::init().is_err() {
         println!("Failed to initialize GTK.");
         return;
     }
+    let e = EmptySpace{};
+    let window = gtk::Window::new(gtk::WindowType::Toplevel);
+    window.set_title("buglets");
+    let drawing_area = Box::new(DrawingArea::new)();
 
-    let window = Window::new(WindowType::Toplevel);
-    window.set_title("First GTK+ Program");
-    window.set_default_size(350, 70);
-    let button = Button::new_with_label("Click me!");
-    window.add(&button);
-    window.show_all();
+    drawing_area.connect_draw(e.get_draw_fn());
+    window.set_default_size(300, 300);
 
     window.connect_delete_event(|_, _| {
         gtk::main_quit();
         Inhibit(false)
     });
-
-    button.connect_clicked(|_| {
-        println!("Clicked!");
-    });
+    window.add(&drawing_area);
+    window.show_all();
 
     gtk::main();
 }

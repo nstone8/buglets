@@ -6,3 +6,4 @@ authors = ["Nick Stone <stone.nicholas@gmail.com>"]
 [dependencies]
 
 gtk = "0.2.0"
+cairo-rs = "0.2.0"
