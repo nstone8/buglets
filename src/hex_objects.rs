@@ -1,9 +1,7 @@
-use gtk::prelude::*;
 use cairo::Context;
-use gtk::DrawingArea;
 
 pub trait Hex {
-    fn draw_hex(p:Position, cr:&Context) {
+    fn draw_hex(p:&Position, cr:&Context) {
         //Draw a hexagon centered at p.i, p.j, p.k
         let x=p.get_cartesian_x();
         let y=p.get_cartesian_y();
@@ -29,25 +27,32 @@ pub struct Position{
     k:i32, //Number of hexes perpendicular to the bottom right edge
     h:i32, //Number of pieces stacked under this one
 } impl Position{
-    fn new(i:f64, j:f64, k:f64, h:f64) -> Position{
+    pub fn new(i:i32, j:i32, k:i32, h:i32) -> Position{
         Position{i:i,j:j,k:k,h:h}
     }
     //Calculate equivalent cartesian coordinates. One unit corresponds to the max radius of each piece
     pub fn get_cartesian_x(&self) -> f64{
-        0.7071*self.j+0.7071*self.k
+        let x=0.866*(self.j as f64)+0.866*(self.k as f64);
+        println!("x={}",x);
+        return x;
     }
     pub fn get_cartesian_y(&self) -> f64{
-        self.i+0.7071*self.i+0.7071*self.k
+        let y=(self.i as f64)+0.5*(self.j as f64)-0.5*(self.k as f64);
+        println!("y={}",y);
+        return y;
+            
     }
 }
 
 pub struct EmptySpace{
 pos:Position
-}
-
-impl Hex for EmptySpace{
+} impl EmptySpace {
+    pub fn new(pos:Position) -> EmptySpace{
+        EmptySpace{pos:pos}
+    }
+} impl Hex for EmptySpace{
     fn draw_fn(&self,cr:&Context){
-            Self::draw_hex(self.pos,cr);
+            Self::draw_hex(&self.pos,cr);
 
     }
 }

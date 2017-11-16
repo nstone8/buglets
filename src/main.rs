@@ -10,21 +10,22 @@ use gtk::DrawingArea;
 use cairo::Context;
 use hex_objects::*;
 fn main() {
-    let scale=30;
     
     if gtk::init().is_err() {
         println!("Failed to initialize GTK.");
         return;
     }
-    let mut painter=Monet::new(scale);
-    let e = EmptySpace{pos:Position::new(0,0,0,0)};
+    let mut painter=Monet::new();
+    let e = EmptySpace::new(Position::new(-1,4,-3,0));
+    let et= EmptySpace::new(Position::new(-2,4,-2,0));
     painter.add_piece(e);
+    painter.add_piece(et);
     let window = gtk::Window::new(gtk::WindowType::Toplevel);
     window.set_title("buglets");
     let drawing_area = Box::new(DrawingArea::new)();
-
-    drawing_area.connect_draw(|d:&DrawingArea,cr:&Context|{
-        cr.scale(painter.scale,painter.scale);
+    drawing_area.connect_draw(move |_:&DrawingArea,cr:&Context|{
+        let scale = Monet::get_draw_scale();
+        cr.scale(scale,scale);
         painter.draw_all_function(cr);
         Inhibit(false)
     });
@@ -39,20 +40,21 @@ fn main() {
 
     gtk::main();
 }
-struct Monet{
-    scale: f64,
-    allPieces:Vec<Box<EmptySpace>>
+pub struct Monet{
+    all_pieces:Vec<EmptySpace>
 }impl Monet{
-    fn new(scale: f64) -> Monet{
-        Monet{scale:scale,allPieces:Vec::new()}
+    pub fn new() -> Monet{
+        Monet{all_pieces:Vec::new()}
+    }
+    pub fn get_draw_scale() -> f64{
+        return 30.0;
     }
     fn add_piece(&mut self,h: EmptySpace){
-        self.allPieces.push(Box::new(h));
+        self.all_pieces.push(h);
     }
     fn draw_all_function(&self,cr:&Context){
-        for piece in &self.allPieces{
-            let draw_fn=piece.get_draw_fn();
-            draw_fn(cr);
+        for piece in &self.all_pieces{
+            piece.draw_fn(cr);
         }
     }
 }
