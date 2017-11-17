@@ -3,21 +3,22 @@ use cairo::Context;
 use hex_objects::*;
 
 pub struct Stack{
-    all_pieces:Vec<Box<Hex>>
+    all_pieces:Vec<Box<Hex>>,
+    global_offset:f64
 }impl Stack{
     pub fn new() -> Stack{
-        Stack{all_pieces:Vec::new::<Box<Hex>>()}
+        Stack{all_pieces:Vec::new(),global_offset:30.0}
     }
-    pub fn get_draw_scale() -> f64{
+    pub fn get_draw_scale(&self) -> f64{
         return 30.0;
     }
-    fn add_piece(&mut self,h: Hex){
-        self.all_pieces.push(Box::new(h));
+    pub fn add_piece(&mut self,h: Box<Hex>){
+        self.all_pieces.push(h);
     }
     pub fn get_global_offset(&self) -> f64{
         return self.global_offset;
     }
-    fn draw_all_function(&self,cr:&Context){
+    pub fn draw_all_function(&self,cr:&Context){
         for piece in &self.all_pieces{
             piece.draw_fn(cr);
         }

@@ -21,13 +21,11 @@ fn main() {
     }
 
     
-    let spaceStack=Stack::new::<EmptySpace>();
-    let e = EmptySpace::new(Position::new(2,0,-2,0));
-    let et= EmptySpace::new(Position::new(2,1,-3,0));
-    let etc= EmptySpace::new(Position::new(3,0,-3,0));
-    spaceStack.add_piece(e);
-    spaceStack.add_piece(et);
-    spaceStack.add_piece(etc);
+    let mut spaceStack=Stack::new();
+    spaceStack.add_piece(Box::new(EmptySpace::new(Position::new(2,0,-2,0))));
+    spaceStack.add_piece(Box::new(EmptySpace::new(Position::new(2,1,-3,0))));
+    spaceStack.add_piece(Box::new(EmptySpace::new(Position::new(3,0,-3,0))));
+
 
     
     let window = gtk::Window::new(gtk::WindowType::Toplevel);
@@ -36,7 +34,7 @@ fn main() {
     drawing_area.connect_draw(move |_:&DrawingArea,cr:&Context|{
         let scale = spaceStack.get_draw_scale();
         cr.scale(scale,scale);
-        spaceStack.draw_draw_all_function(cr);
+        spaceStack.draw_all_function(cr);
         Inhibit(false)
     });
     window.set_default_size(300, 300);
