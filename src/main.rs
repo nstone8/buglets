@@ -16,10 +16,12 @@ fn main() {
         return;
     }
     let mut painter=Monet::new();
-    let e = EmptySpace::new(Position::new(-1,4,-3,0));
-    let et= EmptySpace::new(Position::new(-2,4,-2,0));
+    let e = EmptySpace::new(Position::new(2,0,-2,0));
+    let et= EmptySpace::new(Position::new(2,1,-3,0));
+    let etc= EmptySpace::new(Position::new(3,0,-3,0));
     painter.add_piece(e);
     painter.add_piece(et);
+    painter.add_piece(etc);
     let window = gtk::Window::new(gtk::WindowType::Toplevel);
     window.set_title("buglets");
     let drawing_area = Box::new(DrawingArea::new)();
