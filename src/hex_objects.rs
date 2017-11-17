@@ -1,7 +1,7 @@
 use cairo::Context;
 
 pub trait Hex {
-    fn draw_hex(p:&Position, cr:&Context) {
+    fn draw_hex(&self,p:&Position, cr:&Context) {
         //Draw a hexagon centered at p.i, p.j, p.k
         //let one unit be the distance from the center of the hexagon to an edge along a line which bisects that edge
         let x=p.get_cartesian_x();
@@ -53,7 +53,7 @@ pos:Position
     }
 } impl Hex for EmptySpace{
     fn draw_fn(&self,cr:&Context){
-            Self::draw_hex(&self.pos,cr);
+            self.draw_hex(&self.pos,cr);
 
     }
 }
