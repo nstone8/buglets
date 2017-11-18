@@ -4,7 +4,6 @@ extern crate cairo;
 mod hex_objects;
 mod stacks;
 
-use std::vec::Vec;
 use std::boxed::Box;
 use gtk::prelude::*;
 use gtk::DrawingArea;
@@ -21,10 +20,10 @@ fn main() {
     }
 
     
-    let mut spaceStack=Stack::new();
-    spaceStack.add_piece(Box::new(EmptySpace::new(Position::new(2,0,-2,0))));
-    spaceStack.add_piece(Box::new(EmptySpace::new(Position::new(2,1,-3,0))));
-    spaceStack.add_piece(Box::new(EmptySpace::new(Position::new(3,0,-3,0))));
+    let mut stack=Stack::new();
+    stack.add_piece(Box::new(EmptySpace::new(Position::new(2,0,-2,0))));
+    stack.add_piece(Box::new(EmptySpace::new(Position::new(2,1,-3,0))));
+    stack.add_piece(Box::new(EmptySpace::new(Position::new(3,0,-3,0))));
 
 
     
@@ -32,9 +31,9 @@ fn main() {
     window.set_title("buglets");
     let drawing_area = Box::new(DrawingArea::new)();
     drawing_area.connect_draw(move |_:&DrawingArea,cr:&Context|{
-        let scale = spaceStack.get_draw_scale();
+        let scale = stack.get_draw_scale();
         cr.scale(scale,scale);
-        spaceStack.draw_all_function(cr);
+        stack.draw_all_function(cr);
         Inhibit(false)
     });
     window.set_default_size(300, 300);

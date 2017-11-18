@@ -1,7 +1,7 @@
 use cairo::Context;
 
 pub trait Hex {
-    fn draw_hex(&self,p:&Position, offset:Offset,cr:&Context) {
+    fn draw_hex(&self,p:&Position, offset:&Offset,cr:&Context) {
         //Draw a hexagon centered at p.i, p.j, p.k
         //let one unit be the distance from the center of the hexagon to an edge along a line which bisects that edge
         let x=p.get_cartesian_x()+offset.x;
@@ -20,7 +20,7 @@ pub trait Hex {
         
     }
 
-    fn draw_fn(&self,cr:&Context);
+    fn draw_fn(&self,offset:&Offset,cr:&Context);
 }
 pub struct Position{
     i:i32, //Number of hexes perpendicular to 'top' edge
@@ -48,6 +48,10 @@ pub struct Position{
 pub struct Offset{
     x:f64,
     y:f64
+} impl Offset{
+    pub fn new(x:f64,y:f64)->Offset{
+        Offset{x:x,y:y}
+    }
 }
 
 pub struct EmptySpace{
@@ -57,7 +61,7 @@ pos:Position
         EmptySpace{pos:pos}
     }
 } impl Hex for EmptySpace{
-    fn draw_fn(&self,offset:Offset,cr:&Context){
+    fn draw_fn(&self,offset:&Offset,cr:&Context){
             self.draw_hex(&self.pos,offset,cr);
 
     }
