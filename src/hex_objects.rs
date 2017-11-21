@@ -1,3 +1,5 @@
+use std::ops::Add;
+
 use cairo::Context;
 
 pub trait Hex {
@@ -51,6 +53,14 @@ pub struct Offset{
 } impl Offset{
     pub fn new(x:f64,y:f64)->Offset{
         Offset{x:x,y:y}
+    }
+} impl Add for Offset {
+    type Output=Offset;
+    fn add(self,rhs:Offset)->Offset{
+        Offset{
+            x:self.x+rhs.x,
+            y:self.y+rhs.y
+        }
     }
 }
 

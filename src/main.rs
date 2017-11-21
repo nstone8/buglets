@@ -5,8 +5,11 @@ mod hex_objects;
 mod stacks;
 
 use std::boxed::Box;
+
 use gtk::prelude::*;
 use gtk::DrawingArea;
+use gtk::GestureDrag;
+
 use cairo::Context;
 
 use hex_objects::*;
@@ -36,6 +39,13 @@ fn main() {
         stack.draw_all_function(cr);
         Inhibit(false)
     });
+    let drag=GestureDrag::new(&drawing_area);
+    drag.connect_drag_update(|_:&GestureDrag,x:f64,y:f64|{
+        println!("x={}, y={}",x,y);
+        stack.set_temp_offset(x,y);
+    });
+
+    
     window.set_default_size(300, 300);
 
     window.connect_delete_event(|_, _| {
